@@ -1,0 +1,38 @@
+type Query {
+    bookById(id: ID): Book
+    books: [Book]
+    getMusic(id: ID): Music
+}
+
+type Book {
+    id: ID
+    name: String
+    pageCount: Int
+    author: Author
+}
+#
+#type Author {
+#    id: ID
+#    firstName: String
+#    lastName: String
+#}
+
+type Music {
+    id: ID
+    name: String
+    year: String
+    audition_number: Int
+    album: Album
+}
+
+type Album {
+    id: ID
+    name: String
+    author: Author
+}
+
+type Author {
+    id: ID
+    name: String
+}
+
