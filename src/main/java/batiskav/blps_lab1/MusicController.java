@@ -11,6 +11,6 @@ public class MusicController {
 
     @QueryMapping
     public Music getMusicByID(int id) {
-        return musicService.getMusicByID();
+        return musicService.getMusicByID(id);
     }
 }

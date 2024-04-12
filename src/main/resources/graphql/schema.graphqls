@@ -1,7 +1,5 @@
 type Query {
-    bookById(id: ID): Book
-    books: [Book]
-    getMusic(id: ID): Music
+    getMusicByID(id: ID): Music
 }
 
 type Book {
@@ -33,6 +31,10 @@ type Album {
 
 type Author {
     id: ID
+    name: String
+}
+
+type MusicFile {
     name: String
 }
 
