@@ -1,4 +1,4 @@
-package batiskav.blps_lab1;
+package batiskav.blps_lab1.model;
 
 
 import lombok.AllArgsConstructor;

@@ -1,14 +1,20 @@
-package batiskav.blps_lab1;
+package batiskav.blps_lab1.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import batiskav.blps_lab1.model.Album;
+import batiskav.blps_lab1.model.Music;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class MusicRepository {
 
-    @Autowired
+
     private JdbcTemplate jdbcTemplate;
+
+    public MusicRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     public Music getByID(int id) {
         final String QUERY = """
                select * from blps.music
@@ -21,4 +27,5 @@ public class MusicRepository {
                 new Album(rs.getInt(7), rs.getString(8)), rs.getString(6)), id);
 
     }
+
 }

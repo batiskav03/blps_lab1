@@ -1,19 +1,15 @@
 type Query {
     getMusicByID(id: ID): Music
+    getPlaylist(id: ID): Playlist
 }
 
-type Book {
+
+type Playlist {
     id: ID
     name: String
-    pageCount: Int
-    author: Author
+    description: String
+    trackList: [Music]
 }
-#
-#type Author {
-#    id: ID
-#    firstName: String
-#    lastName: String
-#}
 
 type Music {
     id: ID
@@ -21,6 +17,7 @@ type Music {
     year: String
     audition_number: Int
     album: Album
+    url: String
 }
 
 type Album {
@@ -34,7 +31,5 @@ type Author {
     name: String
 }
 
-type MusicFile {
-    name: String
-}
+
 

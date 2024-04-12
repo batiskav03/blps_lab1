@@ -43,7 +43,8 @@ create table blps.music
     name     text not null,
     year     timestamp,
     aud_num  integer,
-    album_id integer references blps.album
+    album_id integer references blps.album,
+    url      text not null
 );
 
 create table blps.authors_music
@@ -69,15 +70,15 @@ values ('Rust In Peace... Polaris', 1);
 
 
 create
-    or replace procedure add_music(al_id integer, au_id integer, song_name text)
+    or replace procedure add_music(al_id integer, au_id integer, song_name text, song_url text)
     language plpgsql
 as
 $$
 declare
     mu_id integer;
 begin
-    insert into blps.music (name, year, aud_num, album_id)
-    values (song_name, current_timestamp, 0, al_id);
+    insert into blps.music (name, year, aud_num, album_id, url)
+    values (song_name, current_timestamp, 0, al_id, song_url);
     mu_id
         := (select blps.music.music_id
             from blps.music
@@ -91,7 +92,7 @@ $$;
 
 
 create
-    or replace procedure add_music_by_text(album_name text, song_name text)
+    or replace procedure add_music_by_text(album_name text, song_name text, song_url text)
     language plpgsql
 as
 $$
@@ -103,11 +104,11 @@ declare
                       from blps.album
                       where al_id = album_id);
 begin
-    call add_music(al_id, au_id, song_name);
+    call add_music(al_id, au_id, song_name, song_url);
 end;
 $$;
 
 
 
-call add_music(1, 1, 'Tornado of Souls');
-call add_music_by_text('Rust In Peace... Polaris', 'Poison was the cure')
+call add_music(1, 1, 'Tornado of Souls', 'tornadoofsouls.mp3');
+call add_music_by_text('Rust In Peace... Polaris', 'Poison was the cure',  '');

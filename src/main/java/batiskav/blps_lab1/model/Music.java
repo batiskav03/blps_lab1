@@ -1,20 +1,21 @@
-package batiskav.blps_lab1;
+package batiskav.blps_lab1.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class Music {
-
+    @NonNull
     private int id;
+    @NonNull
     private String name;
     private String year;
     private int audition_number;
     private Album album;
-    private String filename;
+    @NonNull
+    private String url;
 
 }
