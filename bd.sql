@@ -1,4 +1,4 @@
-drop table if exists blps.user cascade;
+drop table if exists users cascade;
 drop table if exists blps.album cascade;
 drop table if exists blps.author cascade;
 drop table if exists blps.playlist cascade;
@@ -6,13 +6,26 @@ drop table if exists blps.music cascade;
 drop table if exists blps.users_playlists cascade;
 drop table if exists blps.authors_music cascade;
 drop table if exists blps.playlist_to_music cascade;
+drop table if exists blps.authorities cascade;
+drop table if exists blps.users cascade;
+drop table if exists authorities cascade;
+drop table if exists users cascade;
+drop table if exists blps.subscribe;
 
-CREATE table blps.user
-(
-    u_id     serial primary key,
-    username text not null,
-    reg_data timestamp
+create table users(
+                      id serial primary key,
+                      username varchar(50),
+                      password varchar(500) not null,
+                      enabled boolean not null
 );
+
+create table authorities (
+                             u_id integer,
+                             username varchar(50) not null,
+                             authority varchar(50) not null,
+                             constraint fk_authorities_users foreign key(u_id) references users(id)
+);
+create unique index ix_auth_username on authorities (username,authority);
 
 create table blps.playlist
 (
@@ -57,7 +70,7 @@ create table blps.authors_music
 create table blps.users_playlists
 (
     pl_id integer references blps.playlist,
-    u_id  integer references blps.user,
+    u_id  integer references users,
     primary key (pl_id, u_id)
 );
 
@@ -68,10 +81,19 @@ create table blps.playlist_to_music
     primary key (pl_id, music_id)
 );
 
+create table blps.subscribe
+(
+    user_id integer references users,
+    subscription boolean,
+    primary key (user_id)
+);
+
 insert into blps.author(name)
 values ('Megadeth');
 insert into blps.author(name)
 values ('Хаски');
+insert into blps.album (name, author_id)
+values ('Любимые песни (воображаемых) людей', 2);
 insert into blps.album (name, author_id)
 values ('Rust In Peace... Polaris', 1);
 insert into blps.playlist (name, description) values ('admin playlist', 'liked');
@@ -133,6 +155,27 @@ call add_music_by_text('Rust In Peace... Polaris', 'Holy Wars.The Punishment Due
 call add_music_by_text('Rust In Peace... Polaris', 'Rust In Peace... Polaris',  'Megadeth - Rust In Peace.Polaris.mp3');
 call add_music_by_text('Rust In Peace... Polaris', 'Take No Prisoners',  'Megadeth - Take No Prisoners.mp3');
 call add_music_by_text('Rust In Peace... Polaris', 'Dawn Patrol',  'Megadeth - Dawn Patrol.mp3');
+
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Ай',  'Хаски - Ай.mp3');
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Бит шатает голову',  'Хаски - Бит шатает голову.mp3');
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Панелька',  'Хаски - Панелька.mp3');
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Заново',  'Хаски - Заново.mp3');
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Пуля-дура',  'Хаски - Пуля-дура.mp3');
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Пироман 17',  'Хаски - Пироман 17.mp3');
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Аллилуйя',  'Хаски feat. bollywoodFM - Аллилуйя.mp3');
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Мармелад',  'Хаски - Мармелад.mp3');
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Фюрер',  'Хаски - Фюрер.mp3');
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Черным-черно',  'Хаски - Черным-черно.mp3');
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Хозяйка',  'Хаски - Хозяйка.mp3');
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Детка-голливуд',  'Хаски - Детка-голливуд.mp3');
+call add_music_by_text('Любимые песни (воображаемых) людей', 'Мультики',  'Хаски - Мультики.mp3');
+
+
 call add_music_to_playlist(1, 1);
 call add_music_to_playlist(1, 2);
+call add_music_to_playlist(1, 5);
+call add_music_to_playlist(1, 10);
+call add_music_to_playlist(1, 14);
 
+insert into blps.subscribe (user_id, subscription) values (1, false);
+insert into blps.subscribe (user_id, subscription) values (2, true);
