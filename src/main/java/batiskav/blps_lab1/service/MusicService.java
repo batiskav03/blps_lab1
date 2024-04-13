@@ -11,10 +11,12 @@ public class MusicService {
     private MusicRepository musicRepo;
 
     private S3Service s3client;
-
+    private UserService userService;
     private final String bucketName;
 
-    public MusicService(MusicRepository musicRepo, S3Service s3client, @Value("${bucketName}") String bucketName) {
+    public MusicService(MusicRepository musicRepo, S3Service s3client,
+                        @Value("${bucketName}") String bucketName, UserService userService) {
+        this.userService = userService;
         this.musicRepo = musicRepo;
         this.s3client = s3client;
         this.bucketName = bucketName;
@@ -23,8 +25,10 @@ public class MusicService {
     public Music getMusicByID(int id)  {
         Music song = musicRepo.getByID(id);
         String url = s3client.createTemporaryURL(bucketName, song.getUrl());
-        song.setUrl(url);
-        increaseAuditionNumber(id, song.getAuditionNumber());
+        if (userService.hasSubscribe()) {
+            song.setUrl(url);
+            increaseAuditionNumber(id, song.getAuditionNumber());
+        }
         return song;
     }
 
