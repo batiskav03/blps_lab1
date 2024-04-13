@@ -3,6 +3,8 @@ package batiskav.blps_lab1.controller;
 import batiskav.blps_lab1.model.Music;
 import batiskav.blps_lab1.model.Playlist;
 import batiskav.blps_lab1.service.PlaylistService;
+import batiskav.blps_lab1.service.S3Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
@@ -15,12 +17,14 @@ public class PlaylistController {
 
     private PlaylistService playlistService;
 
+
     public PlaylistController(PlaylistService playlistService) {
         this.playlistService = playlistService;
     }
 
     @QueryMapping
     public Playlist getPlaylist(@Argument int id) {
+
         return playlistService.getPlaylist(id);
     }
 

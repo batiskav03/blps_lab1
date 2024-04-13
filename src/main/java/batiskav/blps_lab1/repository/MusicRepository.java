@@ -4,6 +4,7 @@ import batiskav.blps_lab1.model.Album;
 import batiskav.blps_lab1.model.Music;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class MusicRepository {
@@ -28,4 +29,14 @@ public class MusicRepository {
 
     }
 
+    @Transactional
+    public boolean updateAuditionNumberById(int id, int number) {
+        final String QUERY = """
+                    update blps.music set aud_num = ?
+                        where music_id = ?
+                """;
+        int rows = jdbcTemplate.update(QUERY, number, id);
+
+        return rows != 0;
+    }
 }

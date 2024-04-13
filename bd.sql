@@ -5,7 +5,7 @@ drop table if exists blps.playlist cascade;
 drop table if exists blps.music cascade;
 drop table if exists blps.users_playlists cascade;
 drop table if exists blps.authors_music cascade;
-
+drop table if exists blps.playlist_to_music cascade;
 
 CREATE table blps.user
 (
@@ -61,13 +61,20 @@ create table blps.users_playlists
     primary key (pl_id, u_id)
 );
 
+create table blps.playlist_to_music
+(
+    pl_id integer references blps.playlist,
+    music_id integer references  blps.music,
+    primary key (pl_id, music_id)
+);
+
 insert into blps.author(name)
 values ('Megadeth');
 insert into blps.author(name)
 values ('Хаски');
 insert into blps.album (name, author_id)
 values ('Rust In Peace... Polaris', 1);
-
+insert into blps.playlist (name, description) values ('admin playlist', 'liked');
 
 create
     or replace procedure add_music(al_id integer, au_id integer, song_name text, song_url text)
@@ -108,7 +115,24 @@ begin
 end;
 $$;
 
+create or replace procedure add_music_to_playlist(playlist_id integer, music_id integer)
+    language plpgsql
+as
+$$
+begin
+    insert into blps.playlist_to_music (pl_id, music_id) values (playlist_id, music_id);
+end;
+$$;
 
+call add_music(1, 1, 'Tornado of Souls', 'Megadeth - Tornado Of Souls.mp3');
+call add_music_by_text('Rust In Peace... Polaris', 'Poison was the cure',  'Megadeth - Poison Was The Cure.mp3');
+call add_music_by_text('Rust In Peace... Polaris', 'Five Magics',  'Megadeth - Five Magics.mp3');
+call add_music_by_text('Rust In Peace... Polaris', 'Hangar 18',  'Megadeth - Hangar 18.mp3');
+call add_music_by_text('Rust In Peace... Polaris', 'Lucretia',  'Megadeth - Lucretia.mp3');
+call add_music_by_text('Rust In Peace... Polaris', 'Holy Wars.The Punishment Due',  'Megadeth - Holy Wars.The Punishment Due.mp3');
+call add_music_by_text('Rust In Peace... Polaris', 'Rust In Peace... Polaris',  'Megadeth - Rust In Peace.Polaris.mp3');
+call add_music_by_text('Rust In Peace... Polaris', 'Take No Prisoners',  'Megadeth - Take No Prisoners.mp3');
+call add_music_by_text('Rust In Peace... Polaris', 'Dawn Patrol',  'Megadeth - Dawn Patrol.mp3');
+call add_music_to_playlist(1, 1);
+call add_music_to_playlist(1, 2);
 
-call add_music(1, 1, 'Tornado of Souls', 'tornadoofsouls.mp3');
-call add_music_by_text('Rust In Peace... Polaris', 'Poison was the cure',  '');

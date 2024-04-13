@@ -15,7 +15,7 @@ type Music {
     id: ID
     name: String
     year: String
-    audition_number: Int
+    auditionNumber: Int
     album: Album
     url: String
 }

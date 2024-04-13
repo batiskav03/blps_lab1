@@ -13,7 +13,8 @@ public class Music {
     @NonNull
     private String name;
     private String year;
-    private int audition_number;
+    @NonNull
+    private int auditionNumber;
     private Album album;
     @NonNull
     private String url;
