@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class PlaylistRepository {
+public class PlaylistDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    public PlaylistRepository(JdbcTemplate jdbcTemplate) {
+    public PlaylistDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

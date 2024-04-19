@@ -1,6 +1,6 @@
 package batiskav.blps_lab1.service;
 
-import batiskav.blps_lab1.repository.MusicRepository;
+import batiskav.blps_lab1.repository.MusicDao;
 import batiskav.blps_lab1.model.Music;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -8,15 +8,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class MusicService {
 
-    private MusicRepository musicRepo;
+    private MusicDao musicRepo;
 
     private S3Service s3client;
-    private UserService userService;
+    private SubscribeService subscribeService;
     private final String bucketName;
 
-    public MusicService(MusicRepository musicRepo, S3Service s3client,
-                        @Value("${bucketName}") String bucketName, UserService userService) {
-        this.userService = userService;
+    public MusicService(MusicDao musicRepo, S3Service s3client,
+                        @Value("${bucketName}") String bucketName, SubscribeService subscribeService) {
+        this.subscribeService = subscribeService;
         this.musicRepo = musicRepo;
         this.s3client = s3client;
         this.bucketName = bucketName;
@@ -25,7 +25,7 @@ public class MusicService {
     public Music getMusicByID(int id)  {
         Music song = musicRepo.getByID(id);
         String url = s3client.createTemporaryURL(bucketName, song.getUrl());
-        if (userService.hasSubscribe()) {
+        if (subscribeService.checkSubscribeDate()) {
             song.setUrl(url);
             increaseAuditionNumber(id, song.getAuditionNumber());
         }

@@ -7,12 +7,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class MusicRepository {
+public class MusicDao {
 
 
     private JdbcTemplate jdbcTemplate;
 
-    public MusicRepository(JdbcTemplate jdbcTemplate) {
+    public MusicDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

@@ -1,4 +1,5 @@
 drop table if exists users cascade;
+drop table if exists transaction cascade;
 drop table if exists blps.album cascade;
 drop table if exists blps.author cascade;
 drop table if exists blps.playlist cascade;
@@ -11,6 +12,12 @@ drop table if exists blps.users cascade;
 drop table if exists authorities cascade;
 drop table if exists users cascade;
 drop table if exists blps.subscribe;
+
+create table transaction(
+    id uuid primary key,
+    date date,
+    status boolean
+);
 
 create table users(
                       id serial primary key,
@@ -83,8 +90,10 @@ create table blps.playlist_to_music
 
 create table blps.subscribe
 (
-    user_id integer references users,
+    user_id integer unique references users,
     subscription boolean,
+    start_date date,
+    end_date date,
     primary key (user_id)
 );
 
@@ -97,6 +106,33 @@ values ('Любимые песни (воображаемых) людей', 2);
 insert into blps.album (name, author_id)
 values ('Rust In Peace... Polaris', 1);
 insert into blps.playlist (name, description) values ('admin playlist', 'liked');
+
+
+create or replace function update_subscribe()
+    returns trigger
+    language plpgsql
+as $$
+    declare
+        s_date date;
+        e_date date;
+    begin
+        if OLD.subscription  is false THEN
+            s_date := current_date;
+            e_date := s_date::date + 30;
+        ELSE
+            s_date := OLD.start_date;
+            e_date := OLD.end_date + 30;
+        end if;
+        NEW.start_date = s_date;
+        NEW.end_date = e_date;
+
+        return NEW;
+    end;
+    $$;
+
+create or replace trigger update_subscribe before update on blps.subscribe
+    for each row when (NEW.subscription = true)
+    execute procedure update_subscribe();
 
 create
     or replace procedure add_music(al_id integer, au_id integer, song_name text, song_url text)
@@ -178,4 +214,6 @@ call add_music_to_playlist(1, 10);
 call add_music_to_playlist(1, 14);
 
 insert into blps.subscribe (user_id, subscription) values (1, false);
-insert into blps.subscribe (user_id, subscription) values (2, true);
+insert into blps.subscribe (user_id, subscription) values (2, false);
+
+update blps.subscribe set subscription = true where user_id = 2;
