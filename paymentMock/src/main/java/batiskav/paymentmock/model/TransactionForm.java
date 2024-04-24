@@ -8,5 +8,5 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 public class TransactionForm {
-    UUID id;
+    private UUID id;
 }

@@ -48,7 +48,7 @@ public class UserDao {
         return jdbcTemplate.queryForObject(SELECT_QUERY, (rs, rowNum) -> rs.getInt(1), username);
     }
 
-    // TODO: test this
+
     public void nullifySubscribe(String username) {
         final String QUERY = """
                 update blps.subscribe

@@ -12,6 +12,7 @@ drop table if exists blps.users cascade;
 drop table if exists authorities cascade;
 drop table if exists users cascade;
 drop table if exists blps.subscribe;
+drop table if exists transaction;
 
 create table transaction(
     id uuid primary key,
@@ -217,3 +218,8 @@ insert into blps.subscribe (user_id, subscription) values (1, false);
 insert into blps.subscribe (user_id, subscription) values (2, false);
 
 update blps.subscribe set subscription = true where user_id = 2;
+
+
+select * from blps.music
+                  inner join blps.album on blps.music.album_id = blps.album.album_id
+                  inner join blps.author on blps.author.author_id = blps.album.author_id;

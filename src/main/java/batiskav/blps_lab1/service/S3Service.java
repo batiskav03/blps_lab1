@@ -51,7 +51,6 @@ public class S3Service {
                 .withMethod(HttpMethod.GET)
                 .withExpiration(expiration);
         URL url = s3.generatePresignedUrl(generatePresignedUrlRequest);
-        System.out.println("temp url: " + url.toString());
 
         return url.toString();
     }
