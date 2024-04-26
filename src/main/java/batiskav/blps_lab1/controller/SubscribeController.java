@@ -25,7 +25,7 @@ public class SubscribeController {
     @PostMapping("/subscribe/buy")
     public boolean buySubscribe(@RequestParam UUID id) {
         log.info("Payment for: " + id);
-        Boolean status = restTemplate.postForObject("http://localhost:8090/api/payment", id, Boolean.class);
+        Boolean status = restTemplate.postForObject("http://paymentMock:8090/api/payment", id, Boolean.class);
         if (!status) {
             log.error("Payment failed, try again");
 
@@ -37,7 +37,7 @@ public class SubscribeController {
 
     @GetMapping("/subscribe")
     public UUID startSubscribing() {
-        TransactionFormRepresentation form = restTemplate.getForObject("http://localhost:8090/api/payment", TransactionFormRepresentation.class);
+        TransactionFormRepresentation form = restTemplate.getForObject("http://paymentMock:8090/api/payment", TransactionFormRepresentation.class);
         log.info(form.toString());
         return form.getId();
     }
@@ -46,7 +46,7 @@ public class SubscribeController {
     @GetMapping("/subscribe/status")
     public boolean check(@RequestParam UUID id) {
         log.info("Check payment status " + id);
-        Boolean status = restTemplate.postForObject("http://localhost:8090/api/payment/status", id, Boolean.class);
+        Boolean status = restTemplate.postForObject("http://paymentMock:8090/api/payment/status", id, Boolean.class);
         return status;
     }
 

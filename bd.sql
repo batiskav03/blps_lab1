@@ -11,8 +11,11 @@ drop table if exists blps.authorities cascade;
 drop table if exists blps.users cascade;
 drop table if exists authorities cascade;
 drop table if exists users cascade;
-drop table if exists blps.subscribe;
-drop table if exists transaction;
+drop table if exists blps.subscribe cascade;
+drop table if exists transaction cascade;
+drop schema if exists blps cascade;
+
+create schema blps;
 
 create table transaction(
     id uuid primary key,
@@ -213,6 +216,9 @@ call add_music_to_playlist(1, 2);
 call add_music_to_playlist(1, 5);
 call add_music_to_playlist(1, 10);
 call add_music_to_playlist(1, 14);
+
+insert into users(username, password, enabled) values ('user', 1, true), ('admin', 2, true);
+insert into authorities(username, authority) values ('user', 'ROLE_USER'), ('admin', 'ROLE_ADMIN');
 
 insert into blps.subscribe (user_id, subscription) values (1, false);
 insert into blps.subscribe (user_id, subscription) values (2, false);

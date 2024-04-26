@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>batiskav</groupId>
-	<artifactId>blps_lab1</artifactId>
+	<artifactId>paymentmock</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>paymentMock</name>
 	<description>paymentMock</description>

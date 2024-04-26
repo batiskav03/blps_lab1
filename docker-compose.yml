@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "3361"
+    volumes:
+      - .:/docker-entrypoint-initdb.d
+    ports:
+      - "5555:5432"
+  music:
+    image: docker.io/library/blps_lab1:0.0.1-SNAPSHOT
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+    volumes:
+      -  C:\Users\blondyboy\.aws:/home/cnb/.aws:ro
+    ports:
+      - "8080:8080"
+
+  paymentMock:
+    image: docker.io/library/paymentmock:0.0.1-SNAPSHOT
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+    ports:
+      - "8090:8090"
