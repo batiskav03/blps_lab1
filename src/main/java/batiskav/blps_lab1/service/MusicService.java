@@ -15,7 +15,7 @@ public class MusicService {
     private final String bucketName;
 
     public MusicService(MusicDao musicRepo, S3Service s3client,
-                        @Value("${bucketName}") String bucketName, SubscribeService subscribeService) {
+                        @Value("${api.bucketName}") String bucketName, SubscribeService subscribeService) {
         this.subscribeService = subscribeService;
         this.musicRepo = musicRepo;
         this.s3client = s3client;

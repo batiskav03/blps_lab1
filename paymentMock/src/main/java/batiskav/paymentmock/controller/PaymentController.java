@@ -1,6 +1,7 @@
 package batiskav.paymentmock.controller;
 
 
+import batiskav.paymentmock.model.Persona;
 import batiskav.paymentmock.model.TransactionForm;
 import batiskav.paymentmock.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,20 +23,22 @@ public class PaymentController {
 
 
 
-    @GetMapping
-    public TransactionForm startPayment() {
+    @PostMapping
+    public String startPayment(@RequestBody String CALLBACK_URL) {
         log.info("Started payment for user");
 
-        return paymentService.makeForm();
+        return paymentService.makeForm(CALLBACK_URL);
     }
 
-    @PostMapping
-    public boolean executePayment(@RequestBody UUID uuid) {
+
+
+    @PostMapping("/{id}")
+    public boolean executePayment(@PathVariable("id") UUID uuid) {
         return paymentService.startPayment(uuid);
     }
 
-    @PostMapping("/status")
-    public boolean checkPaymentStatus(@RequestBody UUID uuid) {
+    @PostMapping("/status/{id}")
+    public boolean checkPaymentStatus(@PathVariable("id") UUID uuid) {
         return paymentService.getPaymentStatus(uuid);
     }
 

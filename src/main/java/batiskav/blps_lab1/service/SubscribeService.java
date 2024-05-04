@@ -43,4 +43,16 @@ public class SubscribeService {
 
         return userRepository.updateSubscribe(user.getUsername());
     }
+
+    public boolean updateSubscribeById(int userId) {
+
+        return userRepository.updateSubscribe(userId);
+    }
+
+
+    public int getUserId() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return userRepository.getIdByUsername(user.getUsername());
+    }
 }

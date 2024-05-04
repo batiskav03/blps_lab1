@@ -16,10 +16,10 @@ public class PaymentDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void initPayment(UUID uuid) {
+    public void initPayment(UUID uuid, String CALLBACK_URL) {
         jdbcTemplate.update("""
-                    insert into transaction (id, date) values (?, current_date);
-                    """, uuid);
+                    insert into transaction (id, url,date) values (?, ?, current_date);
+                    """, uuid, CALLBACK_URL);
     }
 
     public boolean findPaymentStatus(UUID uuid) {
@@ -37,5 +37,12 @@ public class PaymentDao {
             """, b, uuid);
 
         return res > 0;
+    }
+
+    public String getCallBackUrl(UUID uuid) {
+        return jdbcTemplate.queryForObject("""
+                    select url from transaction
+                        where id = ?
+                """, (rs, rowNum) -> rs.getString(1), uuid);
     }
 }

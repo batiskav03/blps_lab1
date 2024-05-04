@@ -39,7 +39,19 @@ public class UserDao {
         return true;
     }
 
-    private int getIdByUsername(String username) {
+    public boolean updateSubscribe(int userId) {
+        final String UPDATE_QUERY = """
+                update blps.subscribe 
+                    set subscription = true
+                where user_id = ?
+                """;
+        int result = jdbcTemplate.update(UPDATE_QUERY, userId);
+        if (result == 0) return false;
+
+        return true;
+    }
+
+    public int getIdByUsername(String username) {
         final String SELECT_QUERY = """
                 select user_id from blps.subscribe
                             join users on users.id = user_id
@@ -68,4 +80,6 @@ public class UserDao {
 
         return jdbcTemplate.queryForObject(QUERY, (rs, rowNum) -> rs.getDate(1), userId);
     }
+
+
 }

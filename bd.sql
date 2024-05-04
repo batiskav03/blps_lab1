@@ -20,6 +20,7 @@ create schema blps;
 create table transaction(
     id uuid primary key,
     date date,
+    url text,
     status boolean
 );
 
