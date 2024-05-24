@@ -45,11 +45,13 @@ public class PaymentService {
         if (Math.random() < 0.9) {
             log.info("operation " + uuid + " success");
             restTemplate.postForObject(paymentDao.getCallBackUrl(uuid) + "/" + uuid + "/true", null, Boolean.class);
-            return paymentDao.setPaymentStatus(uuid, true);
+            paymentDao.setPaymentStatus(uuid, true);
+            return true;
         } else {
             log.error("operation " + uuid + " failed");
             restTemplate.postForObject(paymentDao.getCallBackUrl(uuid) + "/" + uuid + "/false", null, String.class);
-            return paymentDao.setPaymentStatus(uuid, false);
+            paymentDao.setPaymentStatus(uuid, false);
+            return false;
         }
     }
 

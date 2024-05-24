@@ -8,11 +8,12 @@ import java.util.Date;
 @Repository
 public class UserDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public UserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
 
 
 
@@ -28,27 +29,23 @@ public class UserDao {
 
     public boolean updateSubscribe(String username) {
         final String UPDATE_QUERY = """
-                update blps.subscribe 
+                update blps.subscribe
                     set subscription = true
                 where user_id = ?
                 """;
         int userId = getIdByUsername(username);
         int result = jdbcTemplate.update(UPDATE_QUERY, userId);
-        if (result == 0) return false;
-
-        return true;
+        return result != 0;
     }
 
     public boolean updateSubscribe(int userId) {
         final String UPDATE_QUERY = """
-                update blps.subscribe 
+                update blps.subscribe
                     set subscription = true
                 where user_id = ?
                 """;
         int result = jdbcTemplate.update(UPDATE_QUERY, userId);
-        if (result == 0) return false;
-
-        return true;
+        return result != 0;
     }
 
     public int getIdByUsername(String username) {

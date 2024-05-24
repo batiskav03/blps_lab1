@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class PlaylistService {
 
-    private PlaylistDao playlistRepo;
+    private final PlaylistDao playlistRepo;
 
     public PlaylistService(PlaylistDao playlistRepo) {
         this.playlistRepo = playlistRepo;

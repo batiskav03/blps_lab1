@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MusicDao {
 
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public MusicDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

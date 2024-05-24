@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class MusicController {
 
-    private MusicService musicService;
+    private final MusicService musicService;
 
 
     public MusicController(MusicService musicService) {

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class MusicService {
 
-    private MusicDao musicRepo;
+    private final MusicDao musicRepo;
 
-    private S3Service s3client;
-    private SubscribeService subscribeService;
+    private final S3Service s3client;
+    private final SubscribeService subscribeService;
     private final String bucketName;
 
     public MusicService(MusicDao musicRepo, S3Service s3client,

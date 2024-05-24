@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public class PlaylistDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public PlaylistDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -36,16 +36,15 @@ public class PlaylistDao {
 
     public List<Music> trackListByPlaylistId(Playlist pl) {
         final String QUERY = """
-                    select music.music_id, music.name, music.aud_num, music.url 
+                    select music.music_id, music.name, music.aud_num, music.url\s
                                 from blps.playlist
                             join blps.playlist_to_music on blps.playlist_to_music.pl_id = blps.playlist.pl_id
                             left join blps.music on blps.music.music_id = blps.playlist_to_music.music_id
                             where blps.playlist.pl_id = ?
                 """;
-        List<Music> musicList = jdbcTemplate.query(QUERY,
-                (rs, rowNum) ->  new Music(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4)), pl.getId());
 
-        return musicList;
+        return jdbcTemplate.query(QUERY,
+                (rs, rowNum) ->  new Music(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4)), pl.getId());
     }
 
 

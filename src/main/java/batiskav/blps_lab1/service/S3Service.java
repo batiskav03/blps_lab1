@@ -18,7 +18,7 @@ import java.net.URL;
 
 @Service
 public class S3Service {
-    private AmazonS3 s3;
+    private final AmazonS3 s3;
 
     public S3Service() {
         AWSCredentials credentials;
